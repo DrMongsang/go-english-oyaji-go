@@ -204,8 +204,37 @@ function setupTouchControls() {
         touchControls.jump = false;
     });
     
-    // タッチでゲーム開始・リスタート
+    // タッチでゲーム開始・リスタート（修正版）
+    jumpBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (gameState === 'opening') {
+            startGame();
+        } else if (gameState === 'gameOver') {
+            gameState = 'opening';
+        }
+    });
+    
+    // 画面全体のタップでもゲーム開始
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (gameState === 'opening') {
+            startGame();
+        } else if (gameState === 'gameOver') {
+            gameState = 'opening';
+        }
+    });
+    
+    // クリックイベントも追加（一部のスマホブラウザ用）
     jumpBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (gameState === 'opening') {
+            startGame();
+        } else if (gameState === 'gameOver') {
+            gameState = 'opening';
+        }
+    });
+    
+    canvas.addEventListener('click', (e) => {
         e.preventDefault();
         if (gameState === 'opening') {
             startGame();
