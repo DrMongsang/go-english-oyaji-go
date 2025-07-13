@@ -178,70 +178,53 @@ function setupTouchControls() {
     leftBtn.addEventListener('touchstart', (e) => {
         e.preventDefault();
         touchControls.left = true;
-    });
+    }, { passive: false });
     leftBtn.addEventListener('touchend', (e) => {
         e.preventDefault();
         touchControls.left = false;
-    });
+    }, { passive: false });
     
     // 右ボタン
     rightBtn.addEventListener('touchstart', (e) => {
         e.preventDefault();
         touchControls.right = true;
-    });
+    }, { passive: false });
     rightBtn.addEventListener('touchend', (e) => {
         e.preventDefault();
         touchControls.right = false;
-    });
+    }, { passive: false });
     
-    // ジャンプボタン
+    // ジャンプボタン（ゲーム中のジャンプ用）
     jumpBtn.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        touchControls.jump = true;
-    });
+        if (gameState === 'playing') {
+            touchControls.jump = true;
+        }
+    }, { passive: false });
     jumpBtn.addEventListener('touchend', (e) => {
         e.preventDefault();
         touchControls.jump = false;
-    });
+    }, { passive: false });
     
-    // タッチでゲーム開始・リスタート（修正版）
-    jumpBtn.addEventListener('touchstart', (e) => {
+    // ゲーム開始・リスタート用（タップイベント）
+    jumpBtn.addEventListener('touchend', (e) => {
         e.preventDefault();
         if (gameState === 'opening') {
             startGame();
         } else if (gameState === 'gameOver') {
             gameState = 'opening';
         }
-    });
+    }, { passive: false });
     
     // 画面全体のタップでもゲーム開始
-    canvas.addEventListener('touchstart', (e) => {
+    canvas.addEventListener('touchend', (e) => {
         e.preventDefault();
         if (gameState === 'opening') {
             startGame();
         } else if (gameState === 'gameOver') {
             gameState = 'opening';
         }
-    });
-    
-    // クリックイベントも追加（一部のスマホブラウザ用）
-    jumpBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (gameState === 'opening') {
-            startGame();
-        } else if (gameState === 'gameOver') {
-            gameState = 'opening';
-        }
-    });
-    
-    canvas.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (gameState === 'opening') {
-            startGame();
-        } else if (gameState === 'gameOver') {
-            gameState = 'opening';
-        }
-    });
+    }, { passive: false });
 }
 
 // update関数内のプレイヤー移動部分を修正
